@@ -1,3 +1,6 @@
+# github.com/asaskevich/govalidator v0.0.0-20200907205600-7a23bdc65eef
+## explicit; go 1.13
+github.com/asaskevich/govalidator
 # github.com/francoispqt/gojay v0.0.0-20181220093123-f2cc13a668ca
 ## explicit
 github.com/francoispqt/gojay
@@ -26,6 +29,7 @@ github.com/kubewarden/k8s-objects/apimachinery/pkg/util/intstr
 github.com/kubewarden/policy-sdk-go
 github.com/kubewarden/policy-sdk-go/constants
 github.com/kubewarden/policy-sdk-go/protocol
+github.com/kubewarden/policy-sdk-go/testing
 # github.com/mailru/easyjson v0.7.7
 ## explicit; go 1.12
 github.com/mailru/easyjson
