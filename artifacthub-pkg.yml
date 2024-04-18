@@ -5,7 +5,7 @@
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
 version: 0.0.1-unreleased
-name: example-pol
+name: k8sallowedrepos
 displayName: Policy Name
 createdAt: 2023-10-16T08:39:33.352432617Z
 description: Short description
@@ -13,7 +13,7 @@ license: Apache-2.0
 homeURL: https://github.com/dmitryint/go-policy-template
 containersImages:
 - name: policy
-  image: ghcr.io/dmitryint/go-policy-template/example-pol:v0.0.1-unreleased
+  image: ghcr.io/dmitryint/go-policy-template/k8sallowedrepos:v0.0.1-unreleased
 keywords:
 - pod
 - cool policy
@@ -26,11 +26,11 @@ links:
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/dmitryint/go-policy-template/example-pol:v0.0.1-unreleased
+  kwctl pull ghcr.io/dmitryint/go-policy-template/k8sallowedrepos:v0.0.1-unreleased
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/dmitryint/go-policy-template/example-pol:v0.0.1-unreleased
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/dmitryint/go-policy-template/k8sallowedrepos:v0.0.1-unreleased
   ```
 maintainers:
 - name: Author name

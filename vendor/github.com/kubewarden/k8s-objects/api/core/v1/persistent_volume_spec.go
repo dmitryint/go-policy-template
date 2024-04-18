@@ -75,6 +75,8 @@ type PersistentVolumeSpec struct {
 	NodeAffinity *VolumeNodeAffinity `json:"nodeAffinity,omitempty"`
 
 	// persistentVolumeReclaimPolicy defines what happens to a persistent volume when released from its claim. Valid options are Retain (default for manually created PersistentVolumes), Delete (default for dynamically provisioned PersistentVolumes), and Recycle (deprecated). Recycle must be supported by the volume plugin underlying this PersistentVolume. More info: https://kubernetes.io/docs/concepts/storage/persistent-volumes#reclaiming
+	//
+	//
 	PersistentVolumeReclaimPolicy string `json:"persistentVolumeReclaimPolicy,omitempty"`
 
 	// photonPersistentDisk represents a PhotonController persistent disk attached and mounted on kubelets host machine
@@ -97,9 +99,6 @@ type PersistentVolumeSpec struct {
 
 	// storageOS represents a StorageOS volume that is attached to the kubelet's host machine and mounted into the pod More info: https://examples.k8s.io/volumes/storageos/README.md
 	Storageos *StorageOSPersistentVolumeSource `json:"storageos,omitempty"`
-
-	// Name of VolumeAttributesClass to which this persistent volume belongs. Empty value is not allowed. When this field is not set, it indicates that this volume does not belong to any VolumeAttributesClass. This field is mutable and can be changed by the CSI driver after a volume has been updated successfully to a new class. For an unbound PersistentVolume, the volumeAttributesClassName will be matched with unbound PersistentVolumeClaims during the binding process. This is an alpha field and requires enabling VolumeAttributesClass feature.
-	VolumeAttributesClassName string `json:"volumeAttributesClassName,omitempty"`
 
 	// volumeMode defines if a volume is intended to be used with a formatted filesystem or to remain in raw block state. Value of Filesystem is implied when not included in spec.
 	VolumeMode string `json:"volumeMode,omitempty"`

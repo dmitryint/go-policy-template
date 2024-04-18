@@ -14,5 +14,7 @@ type StatefulSetUpdateStrategy struct {
 	RollingUpdate *RollingUpdateStatefulSetStrategy `json:"rollingUpdate,omitempty"`
 
 	// Type indicates the type of the StatefulSetUpdateStrategy. Default is RollingUpdate.
+	//
+	//
 	Type string `json:"type,omitempty"`
 }

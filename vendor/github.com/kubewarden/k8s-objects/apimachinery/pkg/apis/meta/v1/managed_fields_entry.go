@@ -6,7 +6,7 @@ package v1
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	jsonext "encoding/json"
+	"github.com/mailru/easyjson"
 )
 
 // ManagedFieldsEntry ManagedFieldsEntry is a workflow-id, a FieldSet and the group version of the resource that the fieldset applies to.
@@ -21,7 +21,7 @@ type ManagedFieldsEntry struct {
 	FieldsType string `json:"fieldsType,omitempty"`
 
 	// FieldsV1 holds the first JSON version format as described in the "FieldsV1" type.
-	FieldsV1 jsonext.RawMessage `json:"fieldsV1,omitempty"`
+	FieldsV1 easyjson.RawMessage `json:"fieldsV1,omitempty"`
 
 	// Manager is an identifier of the workflow managing these fields.
 	Manager string `json:"manager,omitempty"`
@@ -34,5 +34,5 @@ type ManagedFieldsEntry struct {
 
 	// Time is the timestamp of when the ManagedFields entry was added. The timestamp will also be updated if a field is added, the manager changes any of the owned fields value or removes a field. The timestamp does not update when a field is removed from the entry because another manager took it over.
 	// Format: date-time
-	Time *Time `json:"time,omitempty"`
+	Time Time `json:"time,omitempty"`
 }

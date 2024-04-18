@@ -5,134 +5,78 @@ import (
 	"testing"
 
 	corev1 "github.com/kubewarden/k8s-objects/api/core/v1"
-	metav1 "github.com/kubewarden/k8s-objects/apimachinery/pkg/apis/meta/v1"
 	kubewarden_protocol "github.com/kubewarden/policy-sdk-go/protocol"
 	kubewarden_testing "github.com/kubewarden/policy-sdk-go/testing"
 )
 
-func TestEmptySettingsLeadsToApproval(t *testing.T) {
-	settings := Settings{}
+func Test_AllowedRepos(t *testing.T) {
+	settings := Settings{
+		Repos: []string{"allowed/repo"},
+	}
+
 	pod := corev1.Pod{
-		Metadata: &metav1.ObjectMeta{
-			Name:      "test-pod",
-			Namespace: "default",
+		Spec: corev1.PodSpec{
+			Containers: []corev1.Container{
+				{
+					Name:  "container",
+					Image: "allowed/repo/image:tag",
+				},
+			},
 		},
 	}
 
 	payload, err := kubewarden_testing.BuildValidationRequest(&pod, &settings)
 	if err != nil {
-		t.Errorf("Unexpected error: %+v", err)
+		t.Fatalf("Building validation request failed: %v", err)
 	}
 
 	responsePayload, err := validate(payload)
 	if err != nil {
-		t.Errorf("Unexpected error: %+v", err)
+		t.Fatalf("Validating payload failed: %v", err)
 	}
 
 	var response kubewarden_protocol.ValidationResponse
 	if err := json.Unmarshal(responsePayload, &response); err != nil {
-		t.Errorf("Unexpected error: %+v", err)
+		t.Fatalf("Unmarshaling response failed: %v", err)
 	}
 
-	if response.Accepted != true {
-		t.Errorf("Unexpected rejection: msg %s - code %d", *response.Message, *response.Code)
+	if !response.Accepted {
+		t.Errorf("Pod with allowed repo was rejected: %s", *response.Message)
 	}
 }
 
-func TestApproval(t *testing.T) {
+func Test_DisallowedRepos(t *testing.T) {
 	settings := Settings{
-		DeniedNames: []string{"foo", "bar"},
+		Repos: []string{"allowed/repo"},
 	}
+
 	pod := corev1.Pod{
-		Metadata: &metav1.ObjectMeta{
-			Name:      "test-pod",
-			Namespace: "default",
+		Spec: corev1.PodSpec{
+			Containers: []corev1.Container{
+				{
+					Name:  "container",
+					Image: "disallowed/repo/image:tag",
+				},
+			},
 		},
 	}
 
 	payload, err := kubewarden_testing.BuildValidationRequest(&pod, &settings)
 	if err != nil {
-		t.Errorf("Unexpected error: %+v", err)
+		t.Fatalf("Building validation request failed: %v", err)
 	}
 
 	responsePayload, err := validate(payload)
 	if err != nil {
-		t.Errorf("Unexpected error: %+v", err)
+		t.Fatalf("Validating payload failed: %v", err)
 	}
 
 	var response kubewarden_protocol.ValidationResponse
 	if err := json.Unmarshal(responsePayload, &response); err != nil {
-		t.Errorf("Unexpected error: %+v", err)
+		t.Fatalf("Unmarshaling response failed: %v", err)
 	}
 
-	if response.Accepted != true {
-		t.Error("Unexpected rejection")
-	}
-}
-
-func TestApproveFixture(t *testing.T) {
-	settings := Settings{
-		DeniedNames: []string{},
-	}
-
-	payload, err := kubewarden_testing.BuildValidationRequestFromFixture(
-		"test_data/pod.json",
-		&settings)
-	if err != nil {
-		t.Errorf("Unexpected error: %+v", err)
-	}
-
-	responsePayload, err := validate(payload)
-	if err != nil {
-		t.Errorf("Unexpected error: %+v", err)
-	}
-
-	var response kubewarden_protocol.ValidationResponse
-	if err := json.Unmarshal(responsePayload, &response); err != nil {
-		t.Errorf("Unexpected error: %+v", err)
-	}
-
-	if response.Accepted != true {
-		t.Error("Unexpected rejection")
-	}
-}
-
-func TestRejectionBecauseNameIsDenied(t *testing.T) {
-	settings := Settings{
-		DeniedNames: []string{"foo", "test-pod"},
-	}
-
-	pod := corev1.Pod{
-		Metadata: &metav1.ObjectMeta{
-			Name:      "test-pod",
-			Namespace: "default",
-		},
-	}
-
-	payload, err := kubewarden_testing.BuildValidationRequest(&pod, &settings)
-	if err != nil {
-		t.Errorf("Unexpected error: %+v", err)
-	}
-
-	responsePayload, err := validate(payload)
-	if err != nil {
-		t.Errorf("Unexpected error: %+v", err)
-	}
-
-	var response kubewarden_protocol.ValidationResponse
-	if err := json.Unmarshal(responsePayload, &response); err != nil {
-		t.Errorf("Unexpected error: %+v", err)
-	}
-
-	if response.Accepted != false {
-		t.Error("Unexpected approval")
-	}
-
-	expected_message := "The 'test-pod' name is on the deny list"
-	if response.Message == nil {
-		t.Errorf("expected response to have a message")
-	}
-	if *response.Message != expected_message {
-		t.Errorf("Got '%s' instead of '%s'", *response.Message, expected_message)
+	if response.Accepted {
+		t.Error("Pod with disallowed repo was accepted")
 	}
 }

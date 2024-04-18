@@ -3,27 +3,26 @@ package testing
 import (
 	"os"
 
-	"encoding/json"
-
 	kubewarden_protocol "github.com/kubewarden/policy-sdk-go/protocol"
+	"github.com/mailru/easyjson"
 )
 
 // BuildValidationRequestFromFixture creates the payload for the invocation of the `validate`
 // function.
 // * `req_fixture`: path to the json file with a recorded requst to evaluate
-// * `settings`: instance of policy settings. Must be serializable to JSON using json
-func BuildValidationRequestFromFixture(req_fixture string, settings interface{}) ([]byte, error) {
+// * `settings`: instance of policy settings. Must be serializable to JSON using easyjson
+func BuildValidationRequestFromFixture(req_fixture string, settings easyjson.Marshaler) ([]byte, error) {
 	kubeAdmissionReqRaw, err := os.ReadFile(req_fixture)
 	if err != nil {
 		return nil, err
 	}
 
 	kubeAdmissionReq := kubewarden_protocol.KubernetesAdmissionRequest{}
-	if err := json.Unmarshal(kubeAdmissionReqRaw, &kubeAdmissionReq); err != nil {
+	if err := easyjson.Unmarshal(kubeAdmissionReqRaw, &kubeAdmissionReq); err != nil {
 		return nil, err
 	}
 
-	settingsRaw, err := json.Marshal(settings)
+	settingsRaw, err := easyjson.Marshal(settings)
 	if err != nil {
 		return nil, err
 	}
@@ -33,15 +32,15 @@ func BuildValidationRequestFromFixture(req_fixture string, settings interface{})
 		Settings: settingsRaw,
 	}
 
-	return json.Marshal(validationRequest)
+	return easyjson.Marshal(validationRequest)
 }
 
 // BuildValidationRequest creates the payload for the invocation of the `validate`
 // function.
-// * `object`: instance of the object. Must be serializable to JSON using json
-// * `settings`: instance of policy settings. Must be serializable to JSON using json
-func BuildValidationRequest(object, settings interface{}) ([]byte, error) {
-	objectRaw, err := json.Marshal(object)
+// * `object`: instance of the object. Must be serializable to JSON using easyjson
+// * `settings`: instance of policy settings. Must be serializable to JSON using easyjson
+func BuildValidationRequest(object, settings easyjson.Marshaler) ([]byte, error) {
+	objectRaw, err := easyjson.Marshal(object)
 	if err != nil {
 		return nil, err
 	}
@@ -50,7 +49,7 @@ func BuildValidationRequest(object, settings interface{}) ([]byte, error) {
 		Object: objectRaw,
 	}
 
-	settingsRaw, err := json.Marshal(settings)
+	settingsRaw, err := easyjson.Marshal(settings)
 	if err != nil {
 		return nil, err
 	}
@@ -60,5 +59,5 @@ func BuildValidationRequest(object, settings interface{}) ([]byte, error) {
 		Settings: settingsRaw,
 	}
 
-	return json.Marshal(validationRequest)
+	return easyjson.Marshal(validationRequest)
 }

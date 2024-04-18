@@ -26,6 +26,8 @@ type Container struct {
 	Image string `json:"image,omitempty"`
 
 	// Image pull policy. One of Always, Never, IfNotPresent. Defaults to Always if :latest tag is specified, or IfNotPresent otherwise. Cannot be updated. More info: https://kubernetes.io/docs/concepts/containers/images#updating-images
+	//
+	//
 	ImagePullPolicy string `json:"imagePullPolicy,omitempty"`
 
 	// Actions that the management system should take in response to container lifecycle events. Cannot be updated.
@@ -38,20 +40,14 @@ type Container struct {
 	// Required: true
 	Name *string `json:"name"`
 
-	// List of ports to expose from the container. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default "0.0.0.0" address inside a container will be accessible from the network. Modifying this array with strategic merge patch may corrupt the data. For more information See https://github.com/kubernetes/kubernetes/issues/108255. Cannot be updated.
+	// List of ports to expose from the container. Exposing a port here gives the system additional information about the network connections a container uses, but is primarily informational. Not specifying a port here DOES NOT prevent that port from being exposed. Any port which is listening on the default "0.0.0.0" address inside a container will be accessible from the network. Cannot be updated.
 	Ports []*ContainerPort `json:"ports,omitempty"`
 
 	// Periodic probe of container service readiness. Container will be removed from service endpoints if the probe fails. Cannot be updated. More info: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
 	ReadinessProbe *Probe `json:"readinessProbe,omitempty"`
 
-	// Resources resize policy for the container.
-	ResizePolicy []*ContainerResizePolicy `json:"resizePolicy,omitempty"`
-
 	// Compute Resources required by this container. Cannot be updated. More info: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/
 	Resources *ResourceRequirements `json:"resources,omitempty"`
-
-	// RestartPolicy defines the restart behavior of individual containers in a pod. This field may only be set for init containers, and the only allowed value is "Always". For non-init containers or when this field is not specified, the restart behavior is defined by the Pod's restart policy and the container type. Setting the RestartPolicy as "Always" for the init container will have the following effect: this init container will be continually restarted on exit until all regular containers have terminated. Once all regular containers have completed, all init containers with restartPolicy "Always" will be shut down. This lifecycle differs from normal init containers and is often referred to as a "sidecar" container. Although this init container still starts in the init container sequence, it does not wait for the container to complete before proceeding to the next init container. Instead, the next init container starts immediately after this init container is started, or after any startupProbe has successfully completed.
-	RestartPolicy string `json:"restartPolicy,omitempty"`
 
 	// SecurityContext defines the security options the container should be run with. If set, the fields of SecurityContext override the equivalent fields of PodSecurityContext. More info: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
 	SecurityContext *SecurityContext `json:"securityContext,omitempty"`
@@ -69,6 +65,8 @@ type Container struct {
 	TerminationMessagePath string `json:"terminationMessagePath,omitempty"`
 
 	// Indicate how the termination message should be populated. File will use the contents of terminationMessagePath to populate the container status message on both success and failure. FallbackToLogsOnError will use the last chunk of container log output if the termination message file is empty and the container exited with an error. The log output is limited to 2048 bytes or 80 lines, whichever is smaller. Defaults to File. Cannot be updated.
+	//
+	//
 	TerminationMessagePolicy string `json:"terminationMessagePolicy,omitempty"`
 
 	// Whether this container should allocate a TTY for itself, also requires 'stdin' to be true. Default is false.

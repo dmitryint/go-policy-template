@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	kubewarden "github.com/kubewarden/policy-sdk-go"
 	kubewarden_protocol "github.com/kubewarden/policy-sdk-go/protocol"
@@ -10,7 +11,7 @@ import (
 
 // Settings is the structure that describes the policy settings.
 type Settings struct {
-	DeniedNames []string `json:"denied_names"`
+	Repos []string `json:"repos"`
 }
 
 // No special checks have to be done
@@ -18,13 +19,12 @@ func (s *Settings) Valid() (bool, error) {
 	return true, nil
 }
 
-func (s *Settings) IsNameDenied(name string) bool {
-	for _, deniedName := range s.DeniedNames {
-		if deniedName == name {
+func isImageFromAllowedRepo(image string, allowedRepos []string) bool {
+	for _, repo := range allowedRepos {
+		if strings.Contains(image, repo) {
 			return true
 		}
 	}
-
 	return false
 }
 

@@ -28,5 +28,7 @@ type HTTPGetAction struct {
 	Port *apimachinery_pkg_util_intstr.IntOrString `json:"port"`
 
 	// Scheme to use for connecting to the host. Defaults to HTTP.
+	//
+	//
 	Scheme string `json:"scheme,omitempty"`
 }

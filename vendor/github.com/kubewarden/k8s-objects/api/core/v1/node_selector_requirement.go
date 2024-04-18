@@ -15,6 +15,8 @@ type NodeSelectorRequirement struct {
 	Key *string `json:"key"`
 
 	// Represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists, DoesNotExist. Gt, and Lt.
+	//
+	//
 	// Required: true
 	Operator *string `json:"operator"`
 
