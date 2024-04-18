@@ -14,31 +14,15 @@ linters-settings:
     min-occurrences: 4
 
 linters:
-  enable-all: true
-  disable:
-    - maligned
-    - lll
-    - gochecknoinits
-    - gochecknoglobals
-    - godox
-    - gocognit
-    - whitespace
-    - wsl
-    - funlen
-    - wrapcheck
-    - testpackage
-    - nlreturn
-    - gofumpt
-    - goerr113
-    - gci
-    - gomnd
-    - godot
-    - exhaustivestruct
-    - paralleltest
-    - varnamelen
-    - ireturn
-    - exhaustruct
-    #- thelper
+  enable:
+    - revive
+    - goimports
+    - gosec
+    - unparam
+    - unconvert
+    - predeclared
+    - prealloc
+    - misspell
 
 issues:
   exclude-rules:
@@ -47,4 +31,3 @@ issues:
       linters:
         - golint
         - stylecheck
-
