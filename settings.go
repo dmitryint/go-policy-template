@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	kubewarden "github.com/kubewarden/policy-sdk-go"
 	kubewarden_protocol "github.com/kubewarden/policy-sdk-go/protocol"
@@ -10,22 +11,30 @@ import (
 
 // Settings is the structure that describes the policy settings.
 type Settings struct {
-	DeniedNames []string `json:"denied_names"`
+	ExemptImages []string `json:"exemptImages"`
+	HostNetwork  bool     `json:"hostNetwork"`
+	Min          int32    `json:"min"`
+	Max          int32    `json:"max"`
+}
+
+func (s *Settings) IsImageExempt(image string) bool {
+	for _, exemptImage := range s.ExemptImages {
+		if strings.HasSuffix(exemptImage, "*") {
+			if strings.HasPrefix(image, strings.TrimRight(exemptImage, "*")) {
+				return true
+			}
+		} else {
+			if image == exemptImage {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 // No special checks have to be done
 func (s *Settings) Valid() (bool, error) {
 	return true, nil
-}
-
-func (s *Settings) IsNameDenied(name string) bool {
-	for _, deniedName := range s.DeniedNames {
-		if deniedName == name {
-			return true
-		}
-	}
-
-	return false
 }
 
 func NewSettingsFromValidationReq(validationReq *kubewarden_protocol.ValidationRequest) (Settings, error) {
