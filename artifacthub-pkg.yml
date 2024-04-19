@@ -4,33 +4,33 @@
 #
 # This config can be saved to its default location with:
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
-version: 0.0.1-unreleased
-name: example-pol
-displayName: Policy Name
-createdAt: 2023-10-16T08:39:33.352432617Z
+version: 0.0.2-k8sblocknodeport
+name: k8sblocknodeport
+displayName: k8sblocknodeport
+createdAt: 2024-04-19T09:47:31.846532Z
 description: Short description
 license: Apache-2.0
-homeURL: https://github.com/dmitryint/go-policy-template
+homeURL: https://github.com/redarcs-io/kubewarden-policy
 containersImages:
 - name: policy
-  image: ghcr.io/dmitryint/go-policy-template/example-pol:v0.0.1-unreleased
+  image: ghcr.io/redarcs-io/kubewarden-policy/k8sblocknodeport:v0.0.2-k8sblocknodeport
 keywords:
 - pod
 - cool policy
 - kubewarden
 links:
 - name: policy
-  url: https://github.com/dmitryint/go-policy-template/releases/download/v0.0.1-unreleased/policy.wasm
+  url: https://github.com/redarcs-io/kubewarden-policy/releases/download/v0.0.2-k8sblocknodeport/policy.wasm
 - name: source
-  url: https://github.com/dmitryint/go-policy-template
+  url: https://github.com/redarcs-io/kubewarden-policy
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/dmitryint/go-policy-template/example-pol:v0.0.1-unreleased
+  kwctl pull ghcr.io/redarcs-io/kubewarden-policy/k8sblocknodeport:v0.0.2-k8sblocknodeport
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/dmitryint/go-policy-template/example-pol:v0.0.1-unreleased
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/redarcs-io/kubewarden-policy/k8sblocknodeport:v0.0.2-k8sblocknodeport
   ```
 maintainers:
 - name: Author name
