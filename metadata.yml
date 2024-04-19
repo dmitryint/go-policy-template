@@ -13,12 +13,12 @@ executionMode: kubewarden-wapc
 backgroundAudit: true
 annotations:
   # artifacthub specific:
-  io.artifacthub.displayName: policy-name
+  io.artifacthub.displayName: k8srequiredttlsecondsafterfinished
   io.artifacthub.resources: Pod
   io.artifacthub.keywords: pod, cool policy, kubewarden
-  io.kubewarden.policy.ociUrl: ghcr.io/redarcs-io/kubewarden-policy/policy-name # must match release workflow oci-target
+  io.kubewarden.policy.ociUrl: ghcr.io/redarcs-io/kubewarden-policy/k8srequiredttlsecondsafterfinished # must match release workflow oci-target
   # kubewarden specific:
-  io.kubewarden.policy.title: policy-name
+  io.kubewarden.policy.title: k8srequiredttlsecondsafterfinished
   io.kubewarden.policy.description: Short description
   io.kubewarden.policy.author: "Author name <author-email@example.com>"
   io.kubewarden.policy.url: https://github.com/redarcs-io/kubewarden-policy
