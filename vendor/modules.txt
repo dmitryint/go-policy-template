@@ -21,7 +21,6 @@ github.com/kubewarden/k8s-objects/apimachinery/pkg/util/intstr
 github.com/kubewarden/policy-sdk-go
 github.com/kubewarden/policy-sdk-go/constants
 github.com/kubewarden/policy-sdk-go/protocol
-github.com/kubewarden/policy-sdk-go/testing
 # github.com/wapc/wapc-guest-tinygo v0.3.3
 ## explicit; go 1.16
 github.com/wapc/wapc-guest-tinygo
