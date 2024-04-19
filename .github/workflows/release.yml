@@ -8,10 +8,6 @@ on:
 name: Release policy
 
 jobs:
-  test:
-    name: run tests and linters
-    uses: kubewarden/github-actions/.github/workflows/reusable-test-policy-go.yml@v3.1.18
-
   release:
     uses: kubewarden/github-actions/.github/workflows/reusable-release-policy-go.yml@v3.1.18
     with:
