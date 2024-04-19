@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"regexp"
 
 	kubewarden "github.com/kubewarden/policy-sdk-go"
 	kubewarden_protocol "github.com/kubewarden/policy-sdk-go/protocol"
@@ -10,22 +11,27 @@ import (
 
 // Settings is the structure that describes the policy settings.
 type Settings struct {
-	DeniedNames []string `json:"denied_names"`
+	Labels  []Label `json:"labels"`
+	Message string  `json:"message"`
 }
 
-// No special checks have to be done
+type Label struct {
+	Key          string `json:"key"`
+	AllowedRegex string `json:"allowedRegex"`
+}
+
 func (s *Settings) Valid() (bool, error) {
-	return true, nil
-}
-
-func (s *Settings) IsNameDenied(name string) bool {
-	for _, deniedName := range s.DeniedNames {
-		if deniedName == name {
-			return true
+	for _, label := range s.Labels {
+		if label.Key == "" {
+			return false, fmt.Errorf("label key cannot be empty")
+		}
+		if label.AllowedRegex != "" {
+			if _, err := regexp.Compile(label.AllowedRegex); err != nil {
+				return false, fmt.Errorf("invalid regex for label key '%s': %w", label.Key, err)
+			}
 		}
 	}
-
-	return false
+	return true, nil
 }
 
 func NewSettingsFromValidationReq(validationReq *kubewarden_protocol.ValidationRequest) (Settings, error) {

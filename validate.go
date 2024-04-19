@@ -3,61 +3,61 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"strings"
-
-	onelog "github.com/francoispqt/onelog"
-	corev1 "github.com/kubewarden/k8s-objects/api/core/v1"
+	metav1 "github.com/kubewarden/k8s-objects/apimachinery/pkg/apis/meta/v1"
 	kubewarden "github.com/kubewarden/policy-sdk-go"
 	kubewarden_protocol "github.com/kubewarden/policy-sdk-go/protocol"
+	"regexp"
 )
 
 func validate(payload []byte) ([]byte, error) {
-	// Create a ValidationRequest instance from the incoming payload
 	validationRequest := kubewarden_protocol.ValidationRequest{}
-	err := json.Unmarshal(payload, &validationRequest)
-	if err != nil {
-		return kubewarden.RejectRequest(
-			kubewarden.Message(err.Error()),
-			kubewarden.Code(400))
+	if err := json.Unmarshal(payload, &validationRequest); err != nil {
+		return kubewarden.RejectRequest(kubewarden.Message(err.Error()), kubewarden.Code(400))
 	}
 
-	// Create a Settings instance from the ValidationRequest object
 	settings, err := NewSettingsFromValidationReq(&validationRequest)
 	if err != nil {
-		return kubewarden.RejectRequest(
-			kubewarden.Message(err.Error()),
-			kubewarden.Code(400))
+		return kubewarden.RejectRequest(kubewarden.Message(err.Error()), kubewarden.Code(400))
 	}
 
-	// Access the **raw** JSON that describes the object
-	podJSON := validationRequest.Request.Object
-
-	// Try to create a Pod instance using the RAW JSON we got from the
-	// ValidationRequest.
-	pod := &corev1.Pod{}
-	if err := json.Unmarshal([]byte(podJSON), pod); err != nil {
-		return kubewarden.RejectRequest(
-			kubewarden.Message(
-				fmt.Sprintf("Cannot decode Pod object: %s", err.Error())),
-			kubewarden.Code(400))
+	var metadata metav1.ObjectMeta
+	if err := json.Unmarshal([]byte(validationRequest.Request.Object), &metadata); err != nil {
+		return kubewarden.RejectRequest(kubewarden.Message(fmt.Sprintf("Cannot decode object metadata: %s", err.Error())), kubewarden.Code(400))
 	}
 
-	logger.DebugWithFields("validating pod object", func(e onelog.Entry) {
-		e.String("name", pod.Metadata.Name)
-		e.String("namespace", pod.Metadata.Namespace)
-	})
+	missingLabels, err := checkRequiredLabels(metadata.Labels, settings.Labels)
+	if err != nil {
+		return kubewarden.RejectRequest(kubewarden.Message(err.Error()), kubewarden.NoCode)
+	}
 
-	if settings.IsNameDenied(pod.Metadata.Name) {
-		logger.InfoWithFields("rejecting pod object", func(e onelog.Entry) {
-			e.String("name", pod.Metadata.Name)
-			e.String("denied_names", strings.Join(settings.DeniedNames, ","))
-		})
-
-		return kubewarden.RejectRequest(
-			kubewarden.Message(
-				fmt.Sprintf("The '%s' name is on the deny list", pod.Metadata.Name)),
-			kubewarden.NoCode)
+	if len(missingLabels) > 0 {
+		msg := settings.Message
+		if msg == "" {
+			msg = fmt.Sprintf("you must provide labels: %v", missingLabels)
+		}
+		return kubewarden.RejectRequest(kubewarden.Message(msg), kubewarden.NoCode)
 	}
 
 	return kubewarden.AcceptRequest()
+}
+
+func checkRequiredLabels(providedLabels map[string]string, requiredLabels []Label) ([]string, error) {
+	var missingLabels []string
+	for _, requiredLabel := range requiredLabels {
+		value, found := providedLabels[requiredLabel.Key]
+		if !found {
+			missingLabels = append(missingLabels, requiredLabel.Key)
+			continue
+		}
+		if requiredLabel.AllowedRegex != "" {
+			matches, err := regexp.MatchString(requiredLabel.AllowedRegex, value)
+			if err != nil {
+				return nil, fmt.Errorf("failed to match regex: %w", err)
+			}
+			if !matches {
+				return nil, fmt.Errorf("label <%v: %v> does not satisfy allowed regex: %v", requiredLabel.Key, value, requiredLabel.AllowedRegex)
+			}
+		}
+	}
+	return missingLabels, nil
 }
