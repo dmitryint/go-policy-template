@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"strings"
 
 	kubewarden "github.com/kubewarden/policy-sdk-go"
 	kubewarden_protocol "github.com/kubewarden/policy-sdk-go/protocol"
@@ -10,7 +11,21 @@ import (
 
 // Settings is the structure that describes the policy settings.
 type Settings struct {
-	DeniedNames []string `json:"denied_names"`
+	RunAsUser          RuleWithRanges `json:"runAsUser"`
+	RunAsGroup         RuleWithRanges `json:"runAsGroup"`
+	SupplementalGroups RuleWithRanges `json:"supplementalGroups"`
+	FsGroup            RuleWithRanges `json:"fsGroup"`
+	ExemptImages       []string       `json:"exemptImages"`
+}
+
+type RuleWithRanges struct {
+	Rule   string    `json:"rule"`
+	Ranges []IDRange `json:"ranges"`
+}
+
+type IDRange struct {
+	Min int64 `json:"min"`
+	Max int64 `json:"max"`
 }
 
 // No special checks have to be done
@@ -18,9 +33,28 @@ func (s *Settings) Valid() (bool, error) {
 	return true, nil
 }
 
-func (s *Settings) IsNameDenied(name string) bool {
-	for _, deniedName := range s.DeniedNames {
-		if deniedName == name {
+func (s *Settings) IsImageExempt(image string) bool {
+	for _, exemptImage := range s.ExemptImages {
+		if strings.HasSuffix(exemptImage, "*") {
+			if strings.HasPrefix(image, strings.TrimRight(exemptImage, "*")) {
+				return true
+			}
+		} else {
+			if image == exemptImage {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func (r *RuleWithRanges) checkID(id int64) bool {
+	if r.Rule == "RunAsAny" {
+		return true
+	}
+
+	for _, rng := range r.Ranges {
+		if id >= rng.Min && id <= rng.Max {
 			return true
 		}
 	}
