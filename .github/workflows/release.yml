@@ -9,7 +9,6 @@ name: Release policy
 
 jobs:
   release:
-    needs: test
     permissions:
       # Required to create GH releases
       contents: write
@@ -20,4 +19,4 @@ jobs:
 
     uses: kubewarden/github-actions/.github/workflows/reusable-release-policy-go.yml@v3.1.18
     with:
-      oci-target: ghcr.io/${{ github.repository_owner }}/policies/policy-name #FIXME
+      oci-target: ghcr.io/${{ github.repository_owner }}/kubewarden-policy/policy-name #FIXME
