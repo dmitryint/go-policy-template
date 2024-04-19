@@ -6,8 +6,8 @@
 #   kwctl scaffold artifacthub > artifacthub-pkg.yml 
 version: 0.0.2-k8sblockhostnetwork
 name: k8sblockhostnetwork
-displayName: Policy Name
-createdAt: 2024-04-19T09:02:06.629266Z
+displayName: k8sblockhostnetwork
+createdAt: 2024-04-19T09:08:08.735861Z
 description: Short description
 license: Apache-2.0
 homeURL: https://github.com/redarcs-io/kubewarden-policy
