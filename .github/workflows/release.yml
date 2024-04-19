@@ -9,7 +9,6 @@ name: Release policy
 
 jobs:
   release:
-    needs: test
     permissions:
       # Required to create GH releases
       contents: write
