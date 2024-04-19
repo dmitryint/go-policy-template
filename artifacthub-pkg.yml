@@ -7,30 +7,30 @@
 version: 0.0.2-k8sblockhostnetwork
 name: k8sblockhostnetwork
 displayName: Policy Name
-createdAt: 2024-04-19T05:38:08.540015Z
+createdAt: 2024-04-19T09:02:06.629266Z
 description: Short description
 license: Apache-2.0
-homeURL: https://github.com/yourorg/policy-name
+homeURL: https://github.com/redarcs-io/kubewarden-policy
 containersImages:
 - name: policy
-  image: ghcr.io/dmitryint/go-policy-template/k8sblockhostnetwork:v0.0.2-k8sblockhostnetwork
+  image: ghcr.io/redarcs-io/kubewarden-policy/k8sblockhostnetwork:v0.0.2-k8sblockhostnetwork
 keywords:
 - pod
 - cool policy
 - kubewarden
 links:
 - name: policy
-  url: https://github.com/yourorg/policy-name/releases/download/v0.0.2-k8sblockhostnetwork/policy.wasm
+  url: https://github.com/redarcs-io/kubewarden-policy/releases/download/v0.0.2-k8sblockhostnetwork/policy.wasm
 - name: source
-  url: https://github.com/yourorg/policy-name
+  url: https://github.com/redarcs-io/kubewarden-policy
 install: |
   The policy can be obtained using [`kwctl`](https://github.com/kubewarden/kwctl):
   ```console
-  kwctl pull ghcr.io/dmitryint/go-policy-template/k8sblockhostnetwork:v0.0.2-k8sblockhostnetwork
+  kwctl pull ghcr.io/redarcs-io/kubewarden-policy/k8sblockhostnetwork:v0.0.2-k8sblockhostnetwork
   ```
   Then, generate the policy manifest and tune it to your liking. For example:
   ```console
-  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/dmitryint/go-policy-template/k8sblockhostnetwork:v0.0.2-k8sblockhostnetwork
+  kwctl scaffold manifest -t ClusterAdmissionPolicy registry://ghcr.io/redarcs-io/kubewarden-policy/k8sblockhostnetwork:v0.0.2-k8sblockhostnetwork
   ```
 maintainers:
 - name: Author name
