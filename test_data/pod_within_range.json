@@ -46,8 +46,29 @@
         {
           "name": "pause",
           "image": "registry.k8s.io/pause",
-          "securityContext": {
-            "privileged": true
+          "resources": {
+            "limits": {
+              "cpu": "1m",
+              "memory": "1Gi"
+            },
+            "requests": {
+              "cpu": "1m",
+              "memory": "1Gi"
+            }
+          }
+        },
+        {
+          "name": "mycontainer",
+          "image": "image:latest",
+          "resources": {
+            "limits": {
+              "cpu": "2m",
+              "memory": "2Gi"
+            },
+            "requests": {
+              "cpu": "2m",
+              "memory": "2Gi"
+            }
           }
         }
       ]

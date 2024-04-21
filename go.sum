@@ -4,6 +4,10 @@ github.com/francoispqt/gojay v0.0.0-20181220093123-f2cc13a668ca h1:F2BD6Vhei4w0r
 github.com/francoispqt/gojay v0.0.0-20181220093123-f2cc13a668ca/go.mod h1:H8Wgri1Asi1VevY3ySdpIK5+KCpqzToVswNq8g2xZj4=
 github.com/francoispqt/onelog v0.0.0-20190306043706-8c2bb31b10a4 h1:N9eG+1y9e3tnNPXKjssLMa8MumIBDWWoJQWM7htGWUc=
 github.com/francoispqt/onelog v0.0.0-20190306043706-8c2bb31b10a4/go.mod h1:v1Il1fkBpjiYPpEJcGxqgrPUPcHuTC7eHh9zBV3CLBE=
+github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
+github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
+github.com/kubewarden/container-resources-policy v0.2.3 h1:juGUkQygHI/ZD38slay8lLmdpOhMT8ENdD2Msbs1+PI=
+github.com/kubewarden/container-resources-policy v0.2.3/go.mod h1:C1Qdtz5vNMjidIpT0e1C721MJNnwWYcsP/YzJjzHh3M=
 github.com/kubewarden/k8s-objects v1.29.0-kw1 h1:bVQ2WL1ROqApYmHQJ/yxrs3tssfzzalblE2txChcHxY=
 github.com/kubewarden/k8s-objects v1.29.0-kw1/go.mod h1:EMF+Hr26oDR4yQkWJAQpl0M0Ek5ioNXlCswjGZO0G2U=
 github.com/kubewarden/policy-sdk-go v0.6.0 h1:f7RL+hkcjt1g5/4JmUU+itzsdMNs5rFJT7ISJtSAB9g=
@@ -20,4 +24,6 @@ github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXf
 github.com/stretchr/testify v1.8.4 h1:CcVxjf3Q8PM0mHUKJCdn+eZZtm5yQwehR5yeSVQQcUk=
 github.com/wapc/wapc-guest-tinygo v0.3.3 h1:jLebiwjVSHLGnS+BRabQ6+XOV7oihVWAc05Hf1SbeR0=
 github.com/wapc/wapc-guest-tinygo v0.3.3/go.mod h1:mzM3CnsdSYktfPkaBdZ8v88ZlfUDEy5Jh5XBOV3fYcw=
+gopkg.in/inf.v0 v0.9.1 h1:73M5CoZyi3ZLMOyDlQh031Cx6N9NDJ2Vvfl76EDAgDc=
+gopkg.in/inf.v0 v0.9.1/go.mod h1:cWUDdTG/fYaXco+Dcufb5Vnc6Gp2YChqWtbxRZE0mXw=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=

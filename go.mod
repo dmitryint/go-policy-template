@@ -14,6 +14,9 @@ require (
 require (
 	github.com/francoispqt/gojay v0.0.0-20181220093123-f2cc13a668ca // indirect
 	github.com/go-openapi/strfmt v0.21.3 // indirect
+	github.com/google/go-cmp v0.6.0 // indirect
+	github.com/kubewarden/container-resources-policy v0.2.3 // indirect
+	gopkg.in/inf.v0 v0.9.1 // indirect
 )
 
 replace github.com/go-openapi/strfmt => github.com/kubewarden/strfmt v0.1.3
